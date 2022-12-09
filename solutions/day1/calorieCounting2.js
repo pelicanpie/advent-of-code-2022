@@ -7,6 +7,10 @@ const readline = require('node:readline');
 
 let topTotals = [0,0,0];
 
+function sumTotals(topTotals) {
+  return topTotals[0] + topTotals[1] + topTotals[2];
+}
+
 function sortTotals(total) {
   if (total > topTotals[2]) {
     topTotals.pop();
@@ -29,8 +33,6 @@ async function processLineByLine() {
 
   let runningTotal=0;
   for await (const line of rl) {
-    // Each line in input.txt will be successively available here as `line`.
-    console.log(`Line from file: ${line}`);
     if (line === "") {
         sortTotals(runningTotal);
         runningTotal=0;
@@ -39,6 +41,7 @@ async function processLineByLine() {
     }
   }
   console.log(`topTotals: ${topTotals.toString()}`);
+  console.log(`Top Total: ${sumTotals(topTotals)}`);
 }
 
 processLineByLine();
