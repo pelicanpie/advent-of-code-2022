@@ -7,7 +7,7 @@ const readline = require('node:readline');
 let highestTotal = 0;
 
 async function processLineByLine() {
-  const fileStream = fs.createReadStream('input.txt');
+  const fileStream = fs.createReadStream('input1.txt');
 
   const rl = readline.createInterface({
     input: fileStream,
