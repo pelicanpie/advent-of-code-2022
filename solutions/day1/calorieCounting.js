@@ -17,6 +17,7 @@ async function processLineByLine() {
   for await (const line of rl) {
     // Each line in input.txt will be successively available here as `line`.
     console.log(`Line from file: ${line}`);
+    if (line === "") console.log (`empty line`);
   }
 }
 
