@@ -6,7 +6,13 @@ const readline = require('node:readline');
 
 let runningTotal = 0;
 
-
+function findDuplicates (compartment1, compartment2) {
+    let array1 = compartment1.split('');
+    let array2 = compartment2.split('');
+    let duplicate = '';
+    array1.foreach(character => duplicate += array2.find(letter => letter === character));
+    console.log(duplicate);
+}
 
 async function processLineByLine() {
   const fileStream = fs.createReadStream('input.txt');
