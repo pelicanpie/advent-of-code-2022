@@ -1,5 +1,6 @@
 // sources
 //  * https://nodejs.org/api/readline.html#readline_example_read_file_stream_line_by_line
+//  * https://melvingeorge.me/blog/remove-empty-elements-from-array-javascript
 
 const fs = require('node:fs');
 const readline = require('node:readline');
@@ -16,9 +17,11 @@ function findInArray(letter, array) {
 function findDuplicates (compartment1, compartment2) {
     let array1 = compartment1.split('');
     let array2 = compartment2.split('');
-    let duplicate = '';
-    array1.forEach(character => duplicate += findInArray(character, array2));
-    console.log(duplicate);
+    let findings = [];
+    array1.forEach(character => findings.push(findInArray(character, array2)));
+
+    let duplicates = [ ...new Set(findings.filter((a) => a))];
+    return duplicates;
 }
 
 async function processLineByLine() {
@@ -36,7 +39,8 @@ async function processLineByLine() {
       let compartment1 = line.substring(0,middle);
       let compartment2 = line.substring(middle);
       console.log(`${line}: ${compartment1} -- ${compartment2}`);
-      findDuplicates(compartment1, compartment2);
+      let duplicates = findDuplicates(compartment1, compartment2);
+      console.log(duplicates);
   }
   console.log(runningTotal);
 }
