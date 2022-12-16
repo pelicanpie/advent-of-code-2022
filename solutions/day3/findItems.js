@@ -6,11 +6,18 @@ const readline = require('node:readline');
 
 let runningTotal = 0;
 
+function findInArray(letter, array) {
+    let found = '';
+    let result = array.find(x => x === letter);
+    if (result !== undefined) found = result;
+    return found;
+}
+
 function findDuplicates (compartment1, compartment2) {
     let array1 = compartment1.split('');
     let array2 = compartment2.split('');
     let duplicate = '';
-    array1.foreach(character => duplicate += array2.find(letter => letter === character));
+    array1.forEach(character => duplicate += findInArray(character, array2));
     console.log(duplicate);
 }
 
@@ -29,6 +36,7 @@ async function processLineByLine() {
       let compartment1 = line.substring(0,middle);
       let compartment2 = line.substring(middle);
       console.log(`${line}: ${compartment1} -- ${compartment2}`);
+      findDuplicates(compartment1, compartment2);
   }
   console.log(runningTotal);
 }
