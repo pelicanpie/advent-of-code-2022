@@ -7,6 +7,17 @@ const readline = require('node:readline');
 
 let runningTotal = 0;
 
+function calculatePriority(character) {
+    if (character == character.toLowerCase())
+    {
+        return character.charCodeAt(0) - 96
+    }
+    else
+    {
+        return character.charCodeAt(0) - 38
+    }
+}
+
 function findInArray(letter, array) {
     let found = '';
     let result = array.find(x => x === letter);
@@ -41,6 +52,7 @@ async function processLineByLine() {
       console.log(`${line}: ${compartment1} -- ${compartment2}`);
       let duplicates = findDuplicates(compartment1, compartment2);
       console.log(duplicates);
+      duplicates.forEach(x => runningTotal += calculatePriority(x));
   }
   console.log(runningTotal);
 }
