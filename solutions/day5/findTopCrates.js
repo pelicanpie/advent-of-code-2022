@@ -5,6 +5,12 @@ const fs = require('node:fs');
 const readline = require('node:readline');
 
 let runningTotal = 0;
+let stacks = [];
+let numberOfStacks = 0;
+
+function replaceGaps(crateLevel) {
+    return crateLevel.replaceAll('   ','[x]').replaceAll(' ','');
+}
 
 async function processLineByLine() {
   const fileStream = fs.createReadStream('input.txt');
@@ -17,8 +23,12 @@ async function processLineByLine() {
   // ('\r\n') in input.txt as a single line break.
 
   for await (const line of rl) {
-      console.log(`${line}`);
-  }
+    //   console.log(`${line}`);
+      if(line.includes('[')) stacks.push(replaceGaps(line));
+      if(line.indexOf('1') == 1 ) numberOfStacks = line.trim().slice(-1);
+    }
+    console.log(stacks.toString());
+    console.log(numberOfStacks);
   console.log(runningTotal);
 }
 
