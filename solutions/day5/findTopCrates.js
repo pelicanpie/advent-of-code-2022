@@ -12,6 +12,12 @@ function replaceGaps(crateLevel) {
     return crateLevel.replaceAll('   ','[x]').replaceAll(' ','');
 }
 
+function crateToArray(crateLevel) {
+    let crateArray = replaceGaps(crateLevel).replaceAll('[','').split(']');
+    crateArray.pop();
+    return crateArray;
+}
+
 async function processLineByLine() {
   const fileStream = fs.createReadStream('input.txt');
 
@@ -24,10 +30,10 @@ async function processLineByLine() {
 
   for await (const line of rl) {
     //   console.log(`${line}`);
-      if(line.includes('[')) stacks.push(replaceGaps(line));
+      if(line.includes('[')) stacks.push(crateToArray(line));
       if(line.indexOf('1') == 1 ) numberOfStacks = line.trim().slice(-1);
     }
-    console.log(stacks.toString());
+    console.log(stacks);
     console.log(numberOfStacks);
   console.log(runningTotal);
 }
