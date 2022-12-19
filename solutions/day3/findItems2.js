@@ -57,9 +57,10 @@ async function processLineByLine() {
     } else if (lineIndex % 3 == 2) {
         line3 = line;
         
-        // let duplicates = findDuplicates(compartment1, compartment2);
-        // console.log(duplicates);
-        // duplicates.forEach(x => runningTotal += calculatePriority(x));
+        let duplicates = findDuplicates(line1, line2);
+        let finalDuplicates = findDuplicates(duplicates.toString(), line3);
+        console.log(finalDuplicates);
+        finalDuplicates.forEach(x => runningTotal += calculatePriority(x));
     }
     lineIndex++;
   }
