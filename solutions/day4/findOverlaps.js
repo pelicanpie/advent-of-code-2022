@@ -6,6 +6,17 @@ const readline = require('node:readline');
 
 let runningTotal = 0;
 
+function checkOverlap(zoneA, zoneB) {
+    if(parseInt(zoneB[1]) <= parseInt(zoneA[1]) && parseInt(zoneB[0]) >= parseInt(zoneA[0])) return true;
+    else return false;
+}
+
+function checkZoneOverlap(zone1, zone2) {
+    if(checkOverlap(zone1,zone2)) return true;
+    else if (checkOverlap(zone2,zone1)) return true;
+    return false;
+}
+
 async function processLineByLine() {
   const fileStream = fs.createReadStream('input.txt');
 
@@ -21,7 +32,7 @@ async function processLineByLine() {
       let zone1 = assignments[0].split('-');
       let zone2 = assignments[1].split('-');
       console.log(`${line}: ${zone1.toString()}, ${zone2.toString()}`);
-
+      if(checkZoneOverlap(zone1,zone2)) runningTotal++;
   }
   console.log(runningTotal);
 }
