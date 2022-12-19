@@ -17,7 +17,11 @@ async function processLineByLine() {
   // ('\r\n') in input.txt as a single line break.
 
   for await (const line of rl) {
-      console.log(`${line}`);
+      let assignments = line.split(',');
+      let zone1 = assignments[0].split('-');
+      let zone2 = assignments[1].split('-');
+      console.log(`${line}: ${zone1.toString()}, ${zone2.toString()}`);
+
   }
   console.log(runningTotal);
 }
