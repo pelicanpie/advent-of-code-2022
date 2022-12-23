@@ -30,6 +30,11 @@ function transformLevelsToStacks(crateMatrix) {
     return stackMatrix;
 }
 
+function processInstructionLine(instruction) {
+    let splitInstruction = instruction.split(" ");
+    return [splitInstruction[1],splitInstruction[3],splitInstruction[5]];
+}
+
 async function processLineByLine() {
   const fileStream = fs.createReadStream('input.txt');
 
@@ -43,10 +48,11 @@ async function processLineByLine() {
   for await (const line of rl) {
     //   console.log(`${line}`);
       if(line.includes('[')) levels.push(crateToArray(line));
-      if(line.includes('move')) instructions.push(line);
+      if(line.includes('move')) instructions.push(processInstructionLine(line));
     }
     stacks = transformLevelsToStacks(levels);
     console.log(stacks);
+    console.log(instructions);
 
   console.log(runningTotal);
 }
