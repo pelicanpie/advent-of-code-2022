@@ -4,6 +4,24 @@
 const fs = require('node:fs');
 const readline = require('node:readline');
 
+function hasDuplicates(testPacket) {
+    let uniqueChars = [...new Set(testPacket)];
+    if (testPacket.length === uniqueChars.length) return false;
+    return true;
+}
+
+function findSOPIndex(signal) {
+    let sop = signal.splice(0,4);
+    if (!hasDuplicates(sop)) return sop.length;
+    else {
+        for(i=0; i < signal.length; i++){
+            sop.push(...signal.splice(0,1));
+            console.log(sop.slice(-4));
+            if(!hasDuplicates(sop.slice(-4))) return sop.length;
+        }
+    }
+}
+
 async function processLineByLine() {
   const fileStream = fs.createReadStream('input.txt');
 
@@ -16,7 +34,9 @@ async function processLineByLine() {
 
   for await (const line of rl) {
     // Each line in input.txt will be successively available here as `line`.
-    console.log(`Line from file: ${line}`);   
+    console.log(`Line from file: ${line}`); 
+    let input = line.split('');
+    console.log(findSOPIndex(input));
   }
 }
 
