@@ -4,7 +4,6 @@
 const fs = require('node:fs');
 const readline = require('node:readline');
 
-let runningTotal = 0;
 let levels = [];
 let stacks = [];
 
@@ -25,7 +24,7 @@ function transformLevelsToStacks(crateMatrix) {
     crateMatrix[crateMatrix.length-1].forEach((x) => stackMatrix.push([x]));
 
     for( let i = crateMatrix.length-2; i > -1 ; i-- ) {
-        crateMatrix[i].forEach((x,index) => stackMatrix[index].push(x));
+        crateMatrix[i].forEach((x,index) => {if(x !== 'x') {stackMatrix[index].push(x)}});
     }
     return stackMatrix;
 }
@@ -33,6 +32,24 @@ function transformLevelsToStacks(crateMatrix) {
 function processInstructionLine(instruction) {
     let splitInstruction = instruction.split(" ");
     return [splitInstruction[1],splitInstruction[3],splitInstruction[5]];
+}
+
+function executeInstructionsOnStacks(stacks,instructions) {
+    instructions.forEach(x => {
+        for(i=x[0]; i > 0 ; i--) {
+            let crate = stacks[x[1]-1].pop();
+            // console.log(crate);
+            stacks[x[2]-1].push(crate);
+            // console.log(stacks[x[2]-1]);
+        }
+    })
+    return stacks;
+}
+
+function getTopCrateString(stacks) {
+    let topCrates = '';
+    stacks.forEach(x => topCrates += x.pop());
+    return topCrates;
 }
 
 async function processLineByLine() {
@@ -53,8 +70,11 @@ async function processLineByLine() {
     stacks = transformLevelsToStacks(levels);
     console.log(stacks);
     console.log(instructions);
+    
+    let finalStacks = executeInstructionsOnStacks(stacks,instructions);
+    console.log(finalStacks);
 
-  console.log(runningTotal);
+  console.log(getTopCrateString(finalStacks));
 }
 
 processLineByLine();
