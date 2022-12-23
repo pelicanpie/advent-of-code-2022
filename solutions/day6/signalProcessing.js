@@ -16,7 +16,7 @@ function findSOPIndex(signal) {
     else {
         for(i=0; i < signal.length; i++){
             sop.push(...signal.splice(0,1));
-            console.log(sop.slice(-4));
+            // console.log(sop.slice(-4));
             if(!hasDuplicates(sop.slice(-4))) return sop.length;
         }
     }
