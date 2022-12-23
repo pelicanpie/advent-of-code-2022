@@ -3,6 +3,7 @@
 
 const fs = require('node:fs');
 const readline = require('node:readline');
+const { isUndefined } = require('node:util');
 
 let levels = [];
 let stacks = [];
@@ -10,7 +11,7 @@ let stacks = [];
 let instructions = [];
 
 function replaceGaps(crateLevel) {
-    return crateLevel.replaceAll('   ','[x]').replaceAll(' ','');
+    return crateLevel.replaceAll('    ','[x] ').replaceAll(' ','');
 }
 
 function crateToArray(crateLevel) {
@@ -38,9 +39,8 @@ function executeInstructionsOnStacks(stacks,instructions) {
     instructions.forEach(x => {
         for(i=x[0]; i > 0 ; i--) {
             let crate = stacks[x[1]-1].pop();
-            // console.log(crate);
             stacks[x[2]-1].push(crate);
-            // console.log(stacks[x[2]-1]);
+            // if(typeof crate == 'undefined') console.log(x, ':', stacks[x[1]-1], ':', stacks[x[2]-1]);
         }
     })
     return stacks;
@@ -67,9 +67,10 @@ async function processLineByLine() {
       if(line.includes('[')) levels.push(crateToArray(line));
       if(line.includes('move')) instructions.push(processInstructionLine(line));
     }
+    console.log(levels);
     stacks = transformLevelsToStacks(levels);
-    console.log(stacks);
-    console.log(instructions);
+    // console.log(stacks);
+    // console.log(instructions);
     
     let finalStacks = executeInstructionsOnStacks(stacks,instructions);
     console.log(finalStacks);
