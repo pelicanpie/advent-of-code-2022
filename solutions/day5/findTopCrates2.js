@@ -32,16 +32,15 @@ function transformLevelsToStacks(crateMatrix) {
 
 function processInstructionLine(instruction) {
     let splitInstruction = instruction.split(" ");
-    return [splitInstruction[1],splitInstruction[3]-1,splitInstruction[5]-1];
+    return [parseInt(splitInstruction[1]),splitInstruction[3]-1,splitInstruction[5]-1];
 }
 
 function executeInstructionsOnStacks(stacks,instructions) {
     instructions.forEach(x => {
-        for(i=x[0]; i > 0 ; i--) {
-            let crate = stacks[x[1]].pop();
-            stacks[x[2]].push(crate);
-            // if(typeof crate == 'undefined') console.log(x, ':', stacks[x[1]-1], ':', stacks[x[2]-1]);
-        }
+        let crates = stacks[x[1]].splice(-x[0],x[0]);
+        // console.log(crates);
+        stacks[x[2]].splice(100,0,...crates);
+        // console.log(x, ':', stacks[x[1]], ':', stacks[x[2]]);
     })
     return stacks;
 }
@@ -67,7 +66,7 @@ async function processLineByLine() {
       if(line.includes('[')) levels.push(crateToArray(line));
       if(line.includes('move')) instructions.push(processInstructionLine(line));
     }
-    console.log(levels);
+    // console.log(levels);
     stacks = transformLevelsToStacks(levels);
     // console.log(stacks);
     // console.log(instructions);
