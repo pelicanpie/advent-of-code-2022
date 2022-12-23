@@ -5,8 +5,10 @@ const fs = require('node:fs');
 const readline = require('node:readline');
 
 let runningTotal = 0;
+let levels = [];
 let stacks = [];
-let numberOfStacks = 0;
+
+let instructions = [];
 
 function replaceGaps(crateLevel) {
     return crateLevel.replaceAll('   ','[x]').replaceAll(' ','');
@@ -16,6 +18,16 @@ function crateToArray(crateLevel) {
     let crateArray = replaceGaps(crateLevel).replaceAll('[','').split(']');
     crateArray.pop();
     return crateArray;
+}
+
+function transformLevelsToStacks(crateMatrix) {
+    let stackMatrix = [];
+    crateMatrix[crateMatrix.length-1].forEach((x) => stackMatrix.push([x]));
+
+    for( let i = crateMatrix.length-2; i > -1 ; i-- ) {
+        crateMatrix[i].forEach((x,index) => stackMatrix[index].push(x));
+    }
+    return stackMatrix;
 }
 
 async function processLineByLine() {
@@ -30,11 +42,12 @@ async function processLineByLine() {
 
   for await (const line of rl) {
     //   console.log(`${line}`);
-      if(line.includes('[')) stacks.push(crateToArray(line));
-      if(line.indexOf('1') == 1 ) numberOfStacks = line.trim().slice(-1);
+      if(line.includes('[')) levels.push(crateToArray(line));
+      if(line.includes('move')) instructions.push(line);
     }
+    stacks = transformLevelsToStacks(levels);
     console.log(stacks);
-    console.log(numberOfStacks);
+
   console.log(runningTotal);
 }
 
